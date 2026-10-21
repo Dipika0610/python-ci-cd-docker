@@ -125,8 +125,9 @@ jobs:
 
       - name: 5. Simulate Production Deployment & Live Verification
         run: |
-          echo "Pulling and launching deployed image in production environment..."
-          docker run -d --name production-service -p 5000:5000 ghcr.io/${{ github.repository }}:latest
+          IMAGE_NAME=$(echo "ghcr.io/${{ github.repository }}:latest" | tr '[:upper:]' '[:lower:]')
+          echo "Pulling and launching deployed image in production environment: $IMAGE_NAME"
+          docker run -d --name production-service -p 5000:5000 "$IMAGE_NAME"
           
           sleep 5
           echo "Verifying live deployment response..."
